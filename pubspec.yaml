@@ -42,6 +42,15 @@ dependencies:
   record:
   url_launcher:
   http:
+  firebase_core:
+  firebase_auth:
+  flutterfire_ui:
+  cloud_firestore:
+  flutter_shimmer:
+  google_sign_in:
+  image_picker:
+  flutter_bloc:
+  equatable: 
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +75,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/voice-recorder.png
+    - assets/images/giphy.gif
+    - assets/images/gif1.gif
+    - assets/images/gif2.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

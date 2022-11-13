@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:p1_app/pages/favorite_songs.dart';
+import 'package:p1_app/pages/take_audioPage.dart';
 
 class FavoriteSongProvider with ChangeNotifier {
   final List<dynamic> _addedFavoriteteList = [];
@@ -27,7 +28,12 @@ class FavoriteSongProvider with ChangeNotifier {
     return IconButton(
         onPressed: () {
           addTrack(objec);
-          Navigator.of(context).pushNamed("/favorite_songs");
+          print("favoritos");
+          Navigator.of(context).pop(
+            MaterialPageRoute(
+              builder: (context) => FavoriteSongs(),
+            ),
+          );
           notifyListeners();
         },
         icon: Icon(Icons.favorite_border_outlined));
@@ -50,15 +56,19 @@ class FavoriteSongProvider with ChangeNotifier {
                           child: Text("abortar")),
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
                             dlateTrack(objec);
-                            Navigator.of(context).pushNamed("/take_audioPage");
+                            print("favoritos");
+                            Navigator.of(context).pop(
+                              MaterialPageRoute(
+                                builder: (context) => take_audioPage(),
+                              ),
+                            );
                             notifyListeners();
                           },
                           child: Text("delete"))
                     ],
                   ));
         },
-        icon: Icon(Icons.favorite));
+        icon: Icon(Icons.favorite, color: Colors.red));
   }
 }

@@ -1,6 +1,11 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:p1_app/auth/bloc/auth_bloc.dart';
+import 'package:p1_app/login/login_page.dart';
+import 'package:p1_app/pages/favorite_songs.dart';
 import 'package:p1_app/pages/infomusic_page.dart';
 import 'package:p1_app/providers/animation_provider.dart';
 import 'package:p1_app/providers/recordAud_provider.dart';
@@ -13,6 +18,7 @@ class take_audioPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var infRes;
     final _animProvid = Provider.of<AnimationProvider>(context);
     final _audRc = Provider.of<RecordAudProvider>(context);
     late SnackBar snackBar;
@@ -50,8 +56,7 @@ class take_audioPage extends StatelessWidget {
                 bool flag = true;
                 print("object");
                 _animProvid.changeAnimation(flag);
-                var infRes =
-                    await context.read<RecordAudProvider>().startRecord();
+                infRes = await context.read<RecordAudProvider>().startRecord();
                 flag = false;
                 _animProvid.changeAnimation(flag);
                 print("esta : $infRes");
@@ -79,18 +84,63 @@ class take_audioPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              color: Colors.white,
-              shape: CircleBorder(),
-              child: Icon(
-                Icons.favorite_rounded,
-                size: 25,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                print("favoritos");
-                Navigator.of(context).pushNamed("/favorite_songs");
-              },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                  color: Colors.white,
+                  shape: CircleBorder(),
+                  child: Icon(
+                    Icons.favorite_rounded,
+                    size: 25,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    print("favoritos");
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => FavoriteSongs(),
+                      ),
+                    );
+                  },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (builder) => AlertDialog(
+                        title: Text("Sign out"),
+                        content: Text(
+                            "El cierre de su sesion lo llevara a la pantalla de inicio,¿Quieres continuar?"),
+                        actions: [
+                          TextButton(
+                            child: Text("abortar"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Cerrar sesión"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              BlocProvider.of<AuthBloc>(context)
+                                  .add(SignOutEvent());
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    radius: 20,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
