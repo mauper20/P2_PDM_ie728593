@@ -45,12 +45,13 @@ dependencies:
   firebase_core:
   firebase_auth:
   flutterfire_ui:
-  cloud_firestore:
+  
   flutter_shimmer:
   google_sign_in:
   image_picker:
   flutter_bloc:
   equatable: 
+  empty_widget: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,17 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:p1_app/pages/favorite_songs.dart';
 import 'package:p1_app/pages/take_audioPage.dart';
 
 class FavoriteSongProvider with ChangeNotifier {
-  final List<dynamic> _addedFavoriteteList = [];
+  List<dynamic> _addedFavoriteteList = [];
   //we does use of propertys List to get  de content and is a list of objects
   List<dynamic> get getaddedFavoriteteList => _addedFavoriteteList;
-
+  String? _uid = "";
   void dlateTrack(dynamic ObjecTrack) {
     _addedFavoriteteList.remove(ObjecTrack);
     notifyListeners();
@@ -27,7 +32,7 @@ class FavoriteSongProvider with ChangeNotifier {
   Widget Item_add(BuildContext context, dynamic objec) {
     return IconButton(
         onPressed: () {
-          addTrack(objec);
+          addFavorite(objec);
           print("favoritos");
           Navigator.of(context).pop(
             MaterialPageRoute(
@@ -56,7 +61,7 @@ class FavoriteSongProvider with ChangeNotifier {
                           child: Text("abortar")),
                       TextButton(
                           onPressed: () {
-                            dlateTrack(objec);
+                            deleteFavorite(objec);
                             print("favoritos");
                             Navigator.of(context).pop(
                               MaterialPageRoute(
@@ -70,5 +75,48 @@ class FavoriteSongProvider with ChangeNotifier {
                   ));
         },
         icon: Icon(Icons.favorite, color: Colors.red));
+  }
+
+  //----------------------------------------------------------------------------------
+
+  void addFavorite(dynamic musicObj) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      "favorites": FieldValue.arrayUnion([musicObj]),
+      'user_id': FirebaseAuth.instance.currentUser!.uid
+    });
+    getSongsList();
+    notifyListeners();
+  }
+
+  void takeFavoritesongList() async {
+    getSongsList();
+    notifyListeners();
+  }
+
+  void deleteFavorite(dynamic musicObj) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      "favorites": FieldValue.arrayRemove([musicObj]),
+      'user_id': FirebaseAuth.instance.currentUser!.uid
+    });
+    getSongsList();
+    notifyListeners();
+  }
+
+  void getSongsList() async {
+    var myCollection = await FirebaseFirestore.instance
+        .collection('user')
+        .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    var mySongs = myCollection.docs.first.data()['favorites'];
+    log(mySongs.toString());
+    _addedFavoriteteList = mySongs;
+    notifyListeners();
+    return;
   }
 }

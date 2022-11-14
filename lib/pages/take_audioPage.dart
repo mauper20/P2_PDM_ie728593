@@ -1,13 +1,11 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:p1_app/auth/bloc/auth_bloc.dart';
-import 'package:p1_app/login/login_page.dart';
 import 'package:p1_app/pages/favorite_songs.dart';
 import 'package:p1_app/pages/infomusic_page.dart';
 import 'package:p1_app/providers/animation_provider.dart';
+import 'package:p1_app/providers/favoritessongs_provider.dart';
 import 'package:p1_app/providers/recordAud_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +19,7 @@ class take_audioPage extends StatelessWidget {
     var infRes;
     final _animProvid = Provider.of<AnimationProvider>(context);
     final _audRc = Provider.of<RecordAudProvider>(context);
+    var _favoriteList = Provider.of<FavoriteSongProvider>(context);
     late SnackBar snackBar;
     return Scaffold(
       body: Column(
@@ -96,6 +95,7 @@ class take_audioPage extends StatelessWidget {
                     color: Colors.black,
                   ),
                   onPressed: () {
+                    _favoriteList.takeFavoritesongList();
                     print("favoritos");
                     Navigator.of(context).push(
                       MaterialPageRoute(

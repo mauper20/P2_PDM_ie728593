@@ -79,7 +79,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_firestore:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
@@ -141,6 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.17"
+  empty_widget:
+    dependency: "direct main"
+    description:
+      name: empty_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.5"
   equatable:
     dependency: "direct main"
     description:
