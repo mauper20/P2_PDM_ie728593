@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:p1_app/pages/favorite_songs.dart';
 import 'package:p1_app/pages/take_audioPage.dart';
@@ -11,7 +9,6 @@ class FavoriteSongProvider with ChangeNotifier {
   List<dynamic> _addedFavoriteteList = [];
   //we does use of propertys List to get  de content and is a list of objects
   List<dynamic> get getaddedFavoriteteList => _addedFavoriteteList;
-  String? _uid = "";
   void dlateTrack(dynamic ObjecTrack) {
     _addedFavoriteteList.remove(ObjecTrack);
     notifyListeners();
@@ -87,12 +84,12 @@ class FavoriteSongProvider with ChangeNotifier {
       "favorites": FieldValue.arrayUnion([musicObj]),
       'user_id': FirebaseAuth.instance.currentUser!.uid
     });
-    getSongsList();
+    getMusicList();
     notifyListeners();
   }
 
   void takeFavoritesongList() async {
-    getSongsList();
+    getMusicList();
     notifyListeners();
   }
 
@@ -104,18 +101,18 @@ class FavoriteSongProvider with ChangeNotifier {
       "favorites": FieldValue.arrayRemove([musicObj]),
       'user_id': FirebaseAuth.instance.currentUser!.uid
     });
-    getSongsList();
+    getMusicList();
     notifyListeners();
   }
 
-  void getSongsList() async {
+  void getMusicList() async {
     var myCollection = await FirebaseFirestore.instance
         .collection('user')
         .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get();
-    var mySongs = myCollection.docs.first.data()['favorites'];
-    log(mySongs.toString());
-    _addedFavoriteteList = mySongs;
+    var myMusic = myCollection.docs.first.data()['favorites'];
+    log(myMusic.toString());
+    _addedFavoriteteList = myMusic;
     notifyListeners();
     return;
   }
