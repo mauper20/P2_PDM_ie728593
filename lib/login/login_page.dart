@@ -47,12 +47,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     label: const Text("Iniciar sesión con Google"),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                        0xFF,
-                        0xDC,
-                        0x4E,
-                        0x41,
-                      ),
+                      backgroundColor:
+                          const Color.fromARGB(0xFF, 0xDC, 0x4E, 0x41),
                     ),
                   ),
                   const SizedBox(height: 24)
